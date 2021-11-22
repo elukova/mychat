@@ -1,53 +1,22 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
+import { ThemeProvider, createTheme } from "@mui/material";
+// import PropTypes from "prop-types";
+import { MessageList } from "./components";
 
-const App = () => {
-  const [messages, setMessages] = useState([]);
-  const [value, setValue] = useState("");
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const lastMessage = messages[messages.length - 1];
-    let timerId = null;
-    if (messages.length && lastMessage.author !== "Bot") {
-      setTimeout(() => {
-        setMessages([...messages, { author: "Bot", text: "Hello from bot" }]);
-      }, 200);
-    }
-
-    return () => clearInterval(timerId);
-  }, [messages]);
-
-  useEffect(() => {
-    ref.current?.focus();
-  }, []);
-
-  const sendMessage = () => {
-    setMessages([...messages, { author: "User", text: value }]);
-    setValue("");
-  };
-
-  return (
-    <div>
-      {messages.map((message) => (
-        <div>{message.text}</div>
-      ))}
-
-      <input
-        ref={ref}
-        placeholder="Enter a message..."
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
-      <button onClick={sendMessage}>Send</button>
-    </div>
-  );
-};
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#0000ff",
+    },
+  },
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App message="test message" />
+    <ThemeProvider theme={theme}>
+      <MessageList />
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
