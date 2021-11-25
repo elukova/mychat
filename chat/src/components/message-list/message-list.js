@@ -4,12 +4,18 @@ import { useStyles } from "./use-styles";
 import { Send } from "@mui/icons-material";
 import { Message } from "./message";
 // import PropTypes from "prop-types";
-// import style from "./message-list.module.css";
+import style from "./message-list.module.css";
 
 export const MessageList = () => {
   const [messages, setMessages] = useState([]);
   const [value, setValue] = useState("");
   const ref = useRef(null);
+  const refWrapper = useRef(null);
+  useEffect(() => {
+    if (refWrapper.current) {
+      refWrapper.current.scrollTo(0, refWrapper.current.scrollHeight);
+    }
+  }, [messages]);
   const styles = useStyles();
 
   useEffect(() => {
@@ -50,7 +56,7 @@ export const MessageList = () => {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <div ref={refWrapper} className={styles.wrapper}>
       {messages.map((message, index) => (
         <Message message={message} key={index} />
       ))}
