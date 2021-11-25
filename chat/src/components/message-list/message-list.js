@@ -1,16 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Input } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-import PropTypes from "prop-types";
-import style from "./message-list.module.css";
-
-const useStyles = makeStyles(() => ({
-  input: {
-    color: "#9a9fa1",
-    padding: "10px 15px",
-    fontSize: "15px",
-  },
-}));
+import { Input, InputAdornment } from "@mui/material";
+import { useStyles } from "./use-styles";
+import { Send } from "@mui/icons-material";
+import { Message } from "./message";
+// import PropTypes from "prop-types";
+// import style from "./message-list.module.css";
 
 export const MessageList = () => {
   const [messages, setMessages] = useState([]);
@@ -39,18 +33,26 @@ export const MessageList = () => {
   }, []);
 
   const sendMessage = () => {
-    setMessages([...messages, { author: "User", text: value, id: new Date() }]);
-    setValue("");
-    ref.current.focus();
+    if (value) {
+      setMessages([
+        ...messages,
+        { author: "User", text: value, id: new Date() },
+      ]);
+      setValue("");
+      ref.current.focus();
+    }
+  };
+
+  const handlePressInput = ({ code }) => {
+    if (code === "Enter") {
+      sendMessage();
+    }
   };
 
   return (
-    <div>
-      {messages.map((message) => (
-        <div className={style.message}>
-          <div>{message.text}</div>
-          <div>{message.author}</div>
-        </div>
+    <div className={styles.wrapper}>
+      {messages.map((message, index) => (
+        <Message message={message} key={index} />
       ))}
 
       <Input
@@ -60,8 +62,13 @@ export const MessageList = () => {
         placeholder="Enter a message..."
         value={value}
         onChange={(e) => setValue(e.target.value)}
+        onKeyPress={handlePressInput}
+        endAdornment={
+          <InputAdornment position="end">
+            <Send className={styles.icon} onClick={sendMessage} />
+          </InputAdornment>
+        }
       />
-      <Button onClick={sendMessage}>Send</Button>
     </div>
   );
 };

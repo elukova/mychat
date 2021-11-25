@@ -4,7 +4,13 @@ import { ThemeProvider, createTheme } from "@mui/material";
 // import PropTypes from "prop-types";
 import { MessageList } from "./components";
 
-const theme = createTheme({});
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#0000ff",
+    },
+  },
+});
 
 ReactDOM.render(
   <React.StrictMode>
