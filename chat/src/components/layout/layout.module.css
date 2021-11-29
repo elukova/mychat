@@ -1,0 +1,10 @@
+.body {
+  display: flex;
+}
+
+.chats {
+  width: 25%;
+}
+.messages {
+  flex-grow: 1;
+}
